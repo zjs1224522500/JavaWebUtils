@@ -54,6 +54,16 @@
     <!-- end 非法字符过滤器 -->
 
     <!-- start 禁止页面缓存过滤器 -->
+    <filter>
+        <filter-name>NoCacheFilter</filter-name>
+        <filter-class>com.elvis.filters.SelfDefineNoCacheFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>NoCacheFilter</filter-name>
+        <!-- 只过滤JSP请求 -->
+        <url-pattern>*.jsp</url-pattern>
+    </filter-mapping>
+    <!-- end 禁止y页面缓存过滤器 -->
 
     <!-- start 测试Filter的生命周期 -->
     <filter>
