@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_3_1.xsd"
+         version="3.1">
+
+    <!--&lt;!&ndash;start Spring自带字符过滤器 &ndash;&gt;-->
+    <!--<filter>-->
+        <!--<filter-name>EncodingFilter</filter-name>-->
+        <!--<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>-->
+
+        <!--<init-param>-->
+            <!--<param-name>encoding</param-name>-->
+            <!--<param-value>UTF-8</param-value>-->
+        <!--</init-param>-->
+        <!--<init-param>-->
+            <!--<param-name>forceEncoding</param-name>-->
+            <!--<param-value>true</param-value>-->
+        <!--</init-param>-->
+    <!--</filter>-->
+    <!---->
+    <!--<filter-mapping>-->
+        <!--<filter-name>EncodingFilter</filter-name>-->
+        <!--<url-pattern>/*</url-pattern>-->
+    <!--</filter-mapping>-->
+    <!--&lt;!&ndash;end Spring自带字符过滤器 &ndash;&gt;-->
+
+
+    <!-- start 自定义字符编码过滤器 -->
+    <filter>
+        <filter-name>SelfDefineEncodingFilter</filter-name>
+        <filter-class>com.elvis.filters.SelfDefineCharacterEncodingFilter</filter-class>
+        <init-param>
+            <param-name>charset</param-name>
+            <param-value>UTF-8</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>SelfDefineEncodingFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- end 自定义字符编码过滤器 -->
+
+    <!-- start 非法字符过滤器 -->
+    <filter>
+        <filter-name>InvalidCharFilter</filter-name>
+        <filter-class>com.elvis.filters.SelfDefineInvalidCharacterFilter</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>InvalidCharFilter</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+    <!-- end 非法字符过滤器 -->
+
+    <!-- start 禁止页面缓存过滤器 -->
+
+    <!-- start 测试Filter的生命周期 -->
+    <filter>
+        <filter-name>TestFilter</filter-name>
+        <filter-class>com.elvis.filters.FilterTest</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>TestFilter</filter-name>
+        <url-pattern>/filter</url-pattern>
+    </filter-mapping>
+    <!-- end 测试Filter的生命周期 -->
+
+    <servlet>
+        <servlet-name>HelloServlet</servlet-name>
+        <servlet-class>com.elvis.filters.HelloServlet</servlet-class>
+    </servlet>
+
+    <servlet-mapping>
+        <servlet-name>HelloServlet</servlet-name>
+        <url-pattern>/test</url-pattern>
+    </servlet-mapping>
+
+</web-app>
