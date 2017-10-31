@@ -7,22 +7,22 @@
 
     <!--&lt;!&ndash;start Spring自带字符过滤器 &ndash;&gt;-->
     <!--<filter>-->
-        <!--<filter-name>EncodingFilter</filter-name>-->
-        <!--<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>-->
+    <!--<filter-name>EncodingFilter</filter-name>-->
+    <!--<filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>-->
 
-        <!--<init-param>-->
-            <!--<param-name>encoding</param-name>-->
-            <!--<param-value>UTF-8</param-value>-->
-        <!--</init-param>-->
-        <!--<init-param>-->
-            <!--<param-name>forceEncoding</param-name>-->
-            <!--<param-value>true</param-value>-->
-        <!--</init-param>-->
+    <!--<init-param>-->
+    <!--<param-name>encoding</param-name>-->
+    <!--<param-value>UTF-8</param-value>-->
+    <!--</init-param>-->
+    <!--<init-param>-->
+    <!--<param-name>forceEncoding</param-name>-->
+    <!--<param-value>true</param-value>-->
+    <!--</init-param>-->
     <!--</filter>-->
     <!---->
     <!--<filter-mapping>-->
-        <!--<filter-name>EncodingFilter</filter-name>-->
-        <!--<url-pattern>/*</url-pattern>-->
+    <!--<filter-name>EncodingFilter</filter-name>-->
+    <!--<url-pattern>/*</url-pattern>-->
     <!--</filter-mapping>-->
     <!--&lt;!&ndash;end Spring自带字符过滤器 &ndash;&gt;-->
 
@@ -64,6 +64,31 @@
         <url-pattern>*.jsp</url-pattern>
     </filter-mapping>
     <!-- end 禁止y页面缓存过滤器 -->
+
+    <!-- start 静态资源有效时间设置过滤器 -->
+    <filter>
+        <filter-name>StaticResourcesFilter</filter-name>
+        <filter-class>com.elvis.filters.SelfDesignStaticResourcesFilter</filter-class>
+        <init-param>
+            <param-name>js</param-name>
+            <param-value>4</param-value>
+        </init-param>
+        <init-param>
+            <param-name>css</param-name>
+            <param-value>4</param-value>
+        </init-param>
+        <init-param>
+            <param-name>jpg</param-name>
+            <param-value>4</param-value>
+        </init-param>
+    </filter>
+    <filter-mapping>
+        <filter-name>StaticResourcesFilter</filter-name>
+        <url-pattern>*.css</url-pattern>
+        <url-pattern>*.jpg</url-pattern>
+        <url-pattern>*.js</url-pattern>
+    </filter-mapping>
+    <!-- end  静态资源有效时间设置过滤器 -->
 
     <!-- start 测试Filter的生命周期 -->
     <filter>
