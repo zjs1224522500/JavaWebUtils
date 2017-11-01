@@ -7,7 +7,6 @@
             var time = new Date().getTime();
             document.getElementById("imageCode").src="<%=request.getContextPath()%>/servlet/ImageServlet?d=" + time;
         }
-        
     </script>
 </head>
 <body>

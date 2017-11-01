@@ -111,4 +111,11 @@
         <url-pattern>/test</url-pattern>
     </servlet-mapping>
 
+
+    <!-- start 设置session过期时间，以分钟为单位 -->
+    <session-config>
+        <session-timeout>15</session-timeout>
+    </session-config>
+    <!-- end 设置session过期时间-->
+
 </web-app>
