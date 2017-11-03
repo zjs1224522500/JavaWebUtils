@@ -19,7 +19,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 /**
- * Version:v1.0 (description:  ) Date:2017/11/2 0002  Time:19:58
+ * Version:v1.0 (description: 使用组件上传文件  ) Date:2017/11/2 0002  Time:19:58
  */
 @WebServlet(name = "UploadServlet", urlPatterns = "/upload", initParams = {
 		@WebInitParam(name = "uploadPath", value = "data") })
@@ -104,5 +104,6 @@ public class FileUploadServlet extends HttpServlet {
 		}
 		// 跳转到 message.jsp
 		req.getServletContext().getRequestDispatcher("/message.jsp").forward(req, resp);
+
 	}
 }
