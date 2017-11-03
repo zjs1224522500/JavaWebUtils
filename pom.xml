@@ -39,8 +39,8 @@
         <!-- 子模块版本号 -->
         <!-- alpha为内部测试版 -->
         <VertifyCode.version>1.0.0.alpha</VertifyCode.version>
-        <CommonFilters.version>1.0.0 alpha</CommonFilters.version>
-
+        <CommonFilters.version>1.0.0.alpha</CommonFilters.version>
+        <FileUploadAndDownload.version>1.0.0.alpha</FileUploadAndDownload.version>
 
         <!-- spring版本号 -->
         <spring.version>4.3.7.RELEASE</spring.version>
