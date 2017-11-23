@@ -41,7 +41,7 @@
         <VertifyCode.version>1.0.0.alpha</VertifyCode.version>
         <CommonFilters.version>1.0.0.alpha</CommonFilters.version>
         <FileUploadAndDownload.version>1.0.0.alpha</FileUploadAndDownload.version>
-
+        <CommonListeners.version>1.0.0.alpha</CommonListeners.version>
         <!-- spring版本号 -->
         <spring.version>4.3.7.RELEASE</spring.version>
         <aspectj.version>1.8.10</aspectj.version>
