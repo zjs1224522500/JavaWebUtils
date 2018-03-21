@@ -21,7 +21,17 @@
 
 <form action="/download" method="get">
     <input type="hidden" name="fileName" value="4006.doc" />
-    <input type="submit" value="下载文件" />
+    <input type="submit" value="下载文件servlet" />
+</form>
+
+<form action="/spring/download" method="get">
+    <input type="text" name="fileName" />
+    <input type="submit" value="下载文件spring" />
+</form>
+
+<form action="/spring/mvc/download" method="get">
+    <input type="text" name="fileName" />
+    <input type="submit" value="下载文件springmvc" />
 </form>
 </body>
 </html>
