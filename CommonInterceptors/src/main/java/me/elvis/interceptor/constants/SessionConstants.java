@@ -5,11 +5,10 @@
  * Email: 1224522500@qq.com
  * Copyright: Copyright (c) 2017 OSTEC. All rights reserved.
  */
-package cn.edu.uestc.ostec.workload;
+package me.elvis.interceptor.constants;
 
 /**
  * Description: Session域常量
- * Version:v1.0 (author:刘文哲 update: 无 )
  */
 public interface SessionConstants {
 
