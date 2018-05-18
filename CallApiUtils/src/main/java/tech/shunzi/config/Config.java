@@ -42,10 +42,10 @@ public class Config {
     private TokenInterceptor tokenInterceptor;
 
     @Bean
-    public RestTemplate restTemplate() {
+    public RestTemplate restTemplate() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
 
-        CloseableHttpClient httpClient = httpClient();
-        //CloseableHttpClient httpClient = buildSSLClient();
+        //CloseableHttpClient httpClient = httpClient();
+        CloseableHttpClient httpClient = buildSSLClient();
         HttpComponentsClientHttpRequestFactory requestFactory =
                 new HttpComponentsClientHttpRequestFactory();
         requestFactory.setHttpClient(httpClient);
@@ -103,21 +103,12 @@ public class Config {
         return httpClientBuilder.build();
     }
 
-    private CloseableHttpClient buildSSLClient(){
+    private CloseableHttpClient buildSSLClient() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
         TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
 
-        SSLContext sslContext = null;
-        try {
-            sslContext = org.apache.http.ssl.SSLContexts.custom()
-                    .loadTrustMaterial(null, acceptingTrustStrategy)
-                    .build();
-        } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
-        } catch (KeyManagementException e) {
-            e.printStackTrace();
-        } catch (KeyStoreException e) {
-            e.printStackTrace();
-        }
+        SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom()
+                .loadTrustMaterial(null, acceptingTrustStrategy)
+                .build();
 
         SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
 
