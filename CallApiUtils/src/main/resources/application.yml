@@ -12,4 +12,5 @@ jwt:
       refresh: refresh
 #logging
 logging:
-  level: INFO
+  level:
+    tech.shunzi: INFO
