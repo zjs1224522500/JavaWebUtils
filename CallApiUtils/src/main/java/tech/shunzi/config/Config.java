@@ -2,13 +2,20 @@ package tech.shunzi.config;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.math.NumberUtils;
+import org.apache.http.HttpEntityEnclosingRequest;
 import org.apache.http.HttpHost;
+import org.apache.http.HttpRequest;
+import org.apache.http.NoHttpResponseException;
 import org.apache.http.client.HttpClient;
+import org.apache.http.client.HttpRequestRetryHandler;
+import org.apache.http.client.protocol.HttpClientContext;
+import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.impl.conn.PoolingHttpClientConnectionManager;
+import org.apache.http.protocol.HttpContext;
 import org.apache.http.ssl.TrustStrategy;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
@@ -21,100 +28,183 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
+
 import tech.shunzi.interceptor.TokenInterceptor;
 
 import javax.net.ssl.SSLContext;
+import javax.net.ssl.SSLException;
+import javax.net.ssl.SSLHandshakeException;
+
+import java.io.IOException;
+import java.io.InterruptedIOException;
+import java.net.UnknownHostException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
 
 @Configuration
-@EnableAutoConfiguration
 public class Config {
 
-    private boolean ifNeedTokenToCallApi = false;
+	private boolean ifNeedTokenToCallApi = false;
 
-    @Autowired
-    private Environment env;
+	@Autowired
+	private Environment env;
 
-    @Autowired
-    private TokenInterceptor tokenInterceptor;
+	@Autowired
+	private TokenInterceptor tokenInterceptor;
 
-    @Bean
-    public RestTemplate restTemplate() throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
+	@Bean(name = "restTemplate")
+	public RestTemplate restTemplate()
+			throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
 
-        //CloseableHttpClient httpClient = httpClient();
-        CloseableHttpClient httpClient = buildSSLClient();
-        HttpComponentsClientHttpRequestFactory requestFactory =
-                new HttpComponentsClientHttpRequestFactory();
-        requestFactory.setHttpClient(httpClient);
-        RestTemplate restTemplate = new RestTemplate(requestFactory);
+		//CloseableHttpClient httpClient = httpClient();
+		CloseableHttpClient httpClient = buildSSLClient();
+		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+		requestFactory.setHttpClient(httpClient);
+		RestTemplate restTemplate = new RestTemplate(requestFactory);
 
-        if(ifNeedTokenToCallApi) {
-            restTemplate.getInterceptors().add(tokenInterceptor);
-        }
-        return restTemplate;
-    }
+		if (ifNeedTokenToCallApi) {
+			restTemplate.getInterceptors().add(tokenInterceptor);
+		}
+		return restTemplate;
+	}
 
+	@Bean(name = "restTemplateFromConnectionPool")
+	public RestTemplate restTemplateFromConnectionPool()
+			throws NoSuchAlgorithmException, KeyStoreException, KeyManagementException {
+		CloseableHttpClient httpClient = buildClientFromConnectionPool(connectionManager());
+		HttpComponentsClientHttpRequestFactory requestFactory = new HttpComponentsClientHttpRequestFactory();
+		requestFactory.setHttpClient(httpClient);
+		RestTemplate restTemplate = new RestTemplate(requestFactory);
 
-    @Bean
-    public CorsFilter corsFilter() {
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", buildConfig()); // 4
-        return new CorsFilter(source);
-    }
+		if (ifNeedTokenToCallApi) {
+			restTemplate.getInterceptors().add(tokenInterceptor);
+		}
+		return restTemplate;
+	}
 
-    private CorsConfiguration buildConfig() {
-        CorsConfiguration corsConfiguration = new CorsConfiguration();
-        corsConfiguration.addAllowedOrigin("*");
-        corsConfiguration.addAllowedHeader("*");
-        corsConfiguration.addAllowedMethod("*");
-        return corsConfiguration;
-    }
+	@Bean
+	public PoolingHttpClientConnectionManager connectionManager() {
+		PoolingHttpClientConnectionManager cm = new PoolingHttpClientConnectionManager();
+		// set max total connection is 200
+		cm.setMaxTotal(200);
+		// set max connection is 20 per route
+		cm.setDefaultMaxPerRoute(20);
+		return cm;
+	}
 
-    private CloseableHttpClient httpClient()
-    {
-        PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
-        connectionManager.setDefaultMaxPerRoute(1);
-        connectionManager.setMaxTotal(20);
-        HttpClientBuilder httpClientBuilder = HttpClientBuilder.create().setConnectionManager(connectionManager);
-        // Set proxy
-        String proxy = System.getenv("https_proxy");
-        if (StringUtils.isNotBlank(proxy))
-        {
-            proxy = proxy.replace("http://", "");
-            int portSplitter = proxy.lastIndexOf(':');
-            if (NumberUtils.isNumber(proxy.substring(proxy.lastIndexOf(':') + 1)))
-            {
-                String proxyHost = proxy.substring(0, portSplitter);
-                Integer proxyPort = Integer.valueOf(proxy.substring(portSplitter + 1));
-                httpClientBuilder.setProxy(new HttpHost(proxyHost, proxyPort, "https"));
-            }
-        }
+	@Bean
+	public CorsFilter corsFilter() {
+		UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+		source.registerCorsConfiguration("/**", buildConfig()); // 4
+		return new CorsFilter(source);
+	}
 
-        // set proxy if run production env. And the proxy can convert https -> http
-        if (null != env.getProperty("spring.config.name") || StringUtils.join(env.getActiveProfiles()).contains("local"))
-        {
-            httpClientBuilder.setProxy(new HttpHost("45.78.12.52", 8080, "http"));
-        }
+	private CorsConfiguration buildConfig() {
+		CorsConfiguration corsConfiguration = new CorsConfiguration();
+		corsConfiguration.addAllowedOrigin("*");
+		corsConfiguration.addAllowedHeader("*");
+		corsConfiguration.addAllowedMethod("*");
+		return corsConfiguration;
+	}
 
-        // Build
-        return httpClientBuilder.build();
-    }
+	private CloseableHttpClient httpClient() {
+		PoolingHttpClientConnectionManager connectionManager = new PoolingHttpClientConnectionManager();
+		connectionManager.setDefaultMaxPerRoute(1);
+		connectionManager.setMaxTotal(20);
+		HttpClientBuilder httpClientBuilder = HttpClientBuilder.create()
+				.setConnectionManager(connectionManager);
+		// Set proxy
+		String proxy = System.getenv("https_proxy");
+		if (StringUtils.isNotBlank(proxy)) {
+			proxy = proxy.replace("http://", "");
+			int portSplitter = proxy.lastIndexOf(':');
+			if (NumberUtils.isNumber(proxy.substring(proxy.lastIndexOf(':') + 1))) {
+				String proxyHost = proxy.substring(0, portSplitter);
+				Integer proxyPort = Integer.valueOf(proxy.substring(portSplitter + 1));
+				httpClientBuilder.setProxy(new HttpHost(proxyHost, proxyPort, "https"));
+			}
+		}
 
-    private CloseableHttpClient buildSSLClient() throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
-        TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
+		// set proxy if run production env. And the proxy can convert https -> http
+		if (null != env.getProperty("spring.config.name") || StringUtils
+				.join(env.getActiveProfiles()).contains("local")) {
+			httpClientBuilder.setProxy(new HttpHost("45.78.12.52", 8080, "http"));
+		}
 
-        SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom()
-                .loadTrustMaterial(null, acceptingTrustStrategy)
-                .build();
+		// Build
+		return httpClientBuilder.build();
+	}
 
-        SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+	private CloseableHttpClient buildSSLClient()
+			throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+		TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
 
-        CloseableHttpClient httpClient = HttpClients.custom()
-                .setSSLSocketFactory(csf)
-                .build();
-        return httpClient;
-    }
+		SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom()
+				.loadTrustMaterial(null, acceptingTrustStrategy).build();
+
+		SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+
+		CloseableHttpClient httpClient = HttpClients.custom().setSSLSocketFactory(csf).build();
+		return httpClient;
+	}
+
+	private CloseableHttpClient buildClientFromConnectionPool(PoolingHttpClientConnectionManager cm)
+			throws KeyStoreException, NoSuchAlgorithmException, KeyManagementException {
+		// set ssl
+		TrustStrategy acceptingTrustStrategy = (X509Certificate[] chain, String authType) -> true;
+		SSLContext sslContext = org.apache.http.ssl.SSLContexts.custom()
+				.loadTrustMaterial(null, acceptingTrustStrategy).build();
+		SSLConnectionSocketFactory csf = new SSLConnectionSocketFactory(sslContext);
+
+		CloseableHttpClient httpClient = HttpClients.custom().setConnectionManager(cm)
+				.setRetryHandler(httpRequestRetryHandler(5)).setSSLSocketFactory(csf).build();
+		return httpClient;
+	}
+
+	private HttpRequestRetryHandler httpRequestRetryHandler(final int tryTimes) {
+		HttpRequestRetryHandler httpRequestRetryHandler = new HttpRequestRetryHandler() {
+
+			@Override
+			public boolean retryRequest(IOException exception, int executionCount,
+					HttpContext httpContext) {
+				if (executionCount >= tryTimes) {
+					return false;
+				}
+				// 如果服务器丢掉了连接，那么就重试
+				if (exception instanceof NoHttpResponseException) {
+					return true;
+				}
+				// 不要重试SSL握手异常
+				if (exception instanceof SSLHandshakeException) {
+					return false;
+				}
+				// 超时
+				if (exception instanceof InterruptedIOException) {
+					return false;
+				}
+				// 目标服务器不可达
+				if (exception instanceof UnknownHostException) {
+					return true;
+				}
+				// 连接被拒绝
+				if (exception instanceof ConnectTimeoutException) {
+					return false;
+				}
+				// SSL握手异常
+				if (exception instanceof SSLException) {
+					return false;
+				}
+				HttpClientContext clientContext = HttpClientContext.adapt(httpContext);
+				HttpRequest request = clientContext.getRequest();
+				// 如果请求是幂等的，就再次尝试
+				if (!(request instanceof HttpEntityEnclosingRequest)) {
+					return true;
+				}
+				return false;
+			}
+		};
+		return httpRequestRetryHandler;
+	}
 }

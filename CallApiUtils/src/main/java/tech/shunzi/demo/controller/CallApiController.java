@@ -28,4 +28,12 @@ public class CallApiController {
         String realUrl = "https://free-api.heweather.com/v5/forecast?city=CN101080101&key=5c043b56de9f4371b0c7f8bee8f5b75e";
         return callApiService.get(realUrl);
     }
+
+    @GetMapping(value = "/test/pool")
+    public String testConnectionPool()
+    {
+        return callApiService.testConnectionPool();
+    }
+
+
 }
