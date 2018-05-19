@@ -29,6 +29,10 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 import org.springframework.web.filter.CorsFilter;
 
+import feign.Feign;
+import feign.Request;
+import feign.Retryer;
+import tech.shunzi.feign.FeignServiceDemo;
 import tech.shunzi.interceptor.TokenInterceptor;
 
 import javax.net.ssl.SSLContext;
@@ -53,6 +57,13 @@ public class Config {
 
 	@Autowired
 	private TokenInterceptor tokenInterceptor;
+
+	@Bean
+	public FeignServiceDemo feignServiceDemo() {
+		return Feign.builder().options(new Request.Options(1000, 3500))
+				.retryer(new Retryer.Default(5000, 5000, 3))
+				.target(FeignServiceDemo.class, "http://gc.ditu.aliyun.com");
+	}
 
 	@Bean(name = "restTemplate")
 	public RestTemplate restTemplate()

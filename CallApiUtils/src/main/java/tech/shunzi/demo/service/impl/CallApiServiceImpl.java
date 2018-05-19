@@ -79,7 +79,7 @@ public class CallApiServiceImpl implements CallApiService {
 		int failure = 0;
 
 		long start = System.currentTimeMillis();
-		for (int i = 0; i < 100; i++) {
+		for (int i = 0; i < 1000; i++) {
 			if (restTemplate.getForEntity(realUrl, String.class).getStatusCode().is2xxSuccessful()) {
 				System.out.println("Success : 【" + i + "】");
 			} else {

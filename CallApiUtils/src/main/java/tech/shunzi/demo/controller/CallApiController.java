@@ -5,12 +5,16 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import tech.shunzi.demo.service.CallApiService;
+import tech.shunzi.feign.FeignServiceDemo;
 
 @RestController
 public class CallApiController {
 
     @Autowired
     private CallApiService callApiService;
+
+    @Autowired
+    private FeignServiceDemo feignServiceDemo;
 
     String host = "https://my.api.mockaroo.com/";
     String key = "?key=e1a3bfd0";
@@ -35,5 +39,9 @@ public class CallApiController {
         return callApiService.testConnectionPool();
     }
 
-
+    @GetMapping(value = "/test/feign")
+    public String testFeign()
+    {
+        return feignServiceDemo.getLocation("39.938133,116.395739");
+    }
 }
