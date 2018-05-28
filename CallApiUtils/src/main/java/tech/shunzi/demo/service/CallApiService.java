@@ -13,4 +13,6 @@ public interface CallApiService {
 
     ResponseEntity<String> delete(String url, HttpEntity request);
 
+    String testConnectionPool();
+
 }
