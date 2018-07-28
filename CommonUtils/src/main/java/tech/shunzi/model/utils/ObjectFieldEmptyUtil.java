@@ -25,6 +25,12 @@ public class ObjectFieldEmptyUtil
     
     private static final int MAX_LENGTH_OF_STRING = 99;
 
+    /**
+     * Description: Find empty field in a model by reflecting.
+     * @param object The object need to be judged.
+     * @param whiteListField Some field which do not need to be judge.
+     * @return Empty Field Names List.
+     */
     public static List<String> findEmptyFields(Object object, List<String> whiteListField)
     {
         List<String> emptyFieldNames = new ArrayList<>();
@@ -40,6 +46,15 @@ public class ObjectFieldEmptyUtil
 
             try
             {
+                ///////////////////////////////////////////////////////////////////////////////
+                // The two ways to get the value of field.
+                ///////////////////////////////////////////////////////////////////////////////
+                // 1. Change the access of field. Private -> Public. And reflect get value.
+                // 2. Build the name of getXXX(), and call get method of field.
+                ///////////////////////////////////////////////////////////////////////////////
+                // The first way is as follows.
+                //////////////////////////////////////////////////////////////////////////////
+                // Tip: After getting value by changing the access, you'd better to change the access as before.
                 field.setAccessible(true);
                 if (null == field.get(object) || "".equals(field.get(object)))
                 {
@@ -56,6 +71,12 @@ public class ObjectFieldEmptyUtil
         return emptyFieldNames;
     }
 
+    /**
+     * Make the fields of object be empty.
+     * @param object Need to empty model.
+     * @param whiteListField Some fields which needn't to empty.
+     * @return Object including empty fields.
+     */
     public static Object setEmptyFields(Object object, List<String> whiteListField)
     {
         Field[] fields = object.getClass().getDeclaredFields();
@@ -84,7 +105,13 @@ public class ObjectFieldEmptyUtil
         }
         return object;
     }
-    
+
+    /**
+     * Validate the length of String field and return invalid fields names.
+     * @param object object need to be validated
+     * @param whiteListField some fields which needn't to be validated
+     * @return Invalid fields names.
+     */
     public static List<String> findInvalidLengthFields(Object object, List<String> whiteListField)
     {
         List<String> invalidLengthFields = new ArrayList<>();
