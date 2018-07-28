@@ -16,6 +16,7 @@
     <version>1.0-SNAPSHOT</version>
     <modules>
         <module>CallApiUtils</module>
+        <module>CommonUtils</module>
     </modules>
     <!-- 打包的机制，如pom, jar, maven-plugin, ejb, war, ear, rar, par -->
     <packaging>pom</packaging>
