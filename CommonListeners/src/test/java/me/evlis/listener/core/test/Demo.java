@@ -13,6 +13,24 @@ import me.elvis.listener.core.simple.Person;
 public class Demo {
 
 	@Test
+	public void testDog()
+	{
+		int[] array = {2,2,3,3,1,4};
+		int n = array.length;
+
+		for(int i =0; i < n;i++) {
+
+		}
+	}
+
+	@Test
+	public void test() {
+		String str = "ad";
+		String str2 = null;
+		System.out.println(str + str2);
+	}
+
+	@Test
 	public void testListenerCoreSimple() {
 		Person person = new Person("张三");
 		IPersonRunListener listener = new IPersonRunListener() {
