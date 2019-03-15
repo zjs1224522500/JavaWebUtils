@@ -2,10 +2,16 @@ package tech.shunzi.demo;
 
 import org.junit.Test;
 import tech.shunzi.utils.FileUtils;
+import tech.shunzi.utils.MapSortUtils;
 
-import java.io.*;
-import java.util.HashSet;
+import java.io.BufferedReader;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.stream.Collectors;
 
 public class DemoTest {
@@ -32,5 +38,34 @@ public class DemoTest {
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    @Test
+    public void analyzeSentences()
+    {
+        String filePath = "C:\\Users\\i348910\\Desktop\\sql log.txt";
+        Map<String, Integer> sentenceMap = new TreeMap<>();
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(new FileInputStream(filePath)))) {
+            reader.lines().forEach(line -> {
+                if (!sentenceMap.keySet().contains(line))
+                {
+                    int count = 1;
+                    sentenceMap.put(line, count);
+                }
+                else
+                {
+                    int count = sentenceMap.get(line);
+                    sentenceMap.put(line, ++count);
+                }
+            });
+
+            MapSortUtils.sortMapByValue(sentenceMap).entrySet().forEach(entry -> {
+                System.out.println("[" + entry.getValue() + "] " + entry.getKey());
+            });
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
     }
 }
