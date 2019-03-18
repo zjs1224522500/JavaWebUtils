@@ -59,7 +59,7 @@ public class DemoTest {
                 }
             });
 
-            MapSortUtils.sortMapByValue(sentenceMap).entrySet().forEach(entry -> {
+            MapSortUtils.sortMapByIntValue(sentenceMap).entrySet().forEach(entry -> {
                 System.out.println("[" + entry.getValue() + "] " + entry.getKey());
             });
 
