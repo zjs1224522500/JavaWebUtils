@@ -51,7 +51,7 @@
         <spring.version>4.3.7.RELEASE</spring.version>
         <aspectj.version>1.8.10</aspectj.version>
         <!-- jackson版本号 -->
-        <jackson.version>2.8.4</jackson.version>
+        <jackson.version>2.9.0</jackson.version>
         <!-- 日志类库版本号 -->
         <slf4j.version>1.7.21</slf4j.version>
         <log4j.version>1.2.17</log4j.version>
