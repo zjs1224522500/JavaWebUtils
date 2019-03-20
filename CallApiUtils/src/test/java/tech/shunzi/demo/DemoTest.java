@@ -1,6 +1,7 @@
 package tech.shunzi.demo;
 
 import org.junit.Test;
+import org.springframework.security.crypto.bcrypt.BCrypt;
 import tech.shunzi.utils.FileUtils;
 import tech.shunzi.utils.MapSortUtils;
 
@@ -67,5 +68,14 @@ public class DemoTest {
             e.printStackTrace();
         }
 
+    }
+
+
+    @Test
+    public void testBCrypt()
+    {
+        String password = "shunzi+1S";
+        String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
+        System.out.println(hashed);
     }
 }

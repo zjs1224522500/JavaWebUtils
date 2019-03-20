@@ -15,4 +15,8 @@ public interface CallApiService {
 
     String testConnectionPool();
 
+    ResponseEntity<Object> getObject(String url, HttpEntity request);
+
+    ResponseEntity<String> getString(String url, HttpEntity request);
+
 }

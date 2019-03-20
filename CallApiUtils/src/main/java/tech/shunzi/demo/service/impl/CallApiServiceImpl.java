@@ -74,6 +74,22 @@ public class CallApiServiceImpl implements CallApiService {
 		return withPoolStr + withoutPoolStr;
 	}
 
+	@Override
+	public ResponseEntity<Object> getObject(String url, HttpEntity request) {
+		ResponseEntity<Object> response = restTemplate
+				.exchange(UriComponentsBuilder.fromHttpUrl(url).build().toUri(), HttpMethod.GET,
+						request, Object.class);
+		return response;
+	}
+
+	@Override
+	public ResponseEntity<String> getString(String url, HttpEntity request) {
+		ResponseEntity<String> response = restTemplate
+				.exchange(UriComponentsBuilder.fromHttpUrl(url).build().toUri(), HttpMethod.GET,
+						request, String.class);
+		return response;
+	}
+
 	private long callApi100Times(RestTemplate restTemplate) {
 		String realUrl = "https://free-api.heweather.com/v5/forecast?city=CN101080101&key=5c043b56de9f4371b0c7f8bee8f5b75e";
 		int failure = 0;

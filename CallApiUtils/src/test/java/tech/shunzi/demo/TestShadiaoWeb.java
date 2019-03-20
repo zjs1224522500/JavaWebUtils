@@ -4,8 +4,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.http.*;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringRunner;
+import org.springframework.util.LinkedMultiValueMap;
+import org.springframework.util.MultiValueMap;
+import org.springframework.web.util.UriComponentsBuilder;
 import tech.shunzi.demo.service.CallApiService;
 
 import java.util.HashSet;
@@ -32,5 +36,21 @@ public class TestShadiaoWeb {
         System.out.println(results);
         System.out.println(results.size());
     }
+
+    @Test
+    public void testShadiaoHJeader()
+    {
+        MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
+        HttpHeaders headers = new HttpHeaders();
+        headers.add("X-API-Key", "e1a3bfd0");
+        HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
+
+        ResponseEntity<String> response = callApiService.getString("https://my.api.mockaroo.com/mockapitest", requestEntity);
+        ResponseEntity<Object> responseObj = callApiService.getObject("https://my.api.mockaroo.com/mockapitest", requestEntity);
+        System.out.println(response.getHeaders());
+        System.out.println(responseObj.getHeaders());
+    }
+
+
 
 }
