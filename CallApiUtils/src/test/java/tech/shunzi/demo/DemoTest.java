@@ -4,12 +4,12 @@ import org.junit.Test;
 import org.springframework.security.crypto.bcrypt.BCrypt;
 import tech.shunzi.utils.FileUtils;
 import tech.shunzi.utils.MapSortUtils;
+import tech.shunzi.utils.OcrUtils;
 
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
@@ -77,5 +77,15 @@ public class DemoTest {
         String password = "shunzi+1S";
         String hashed = BCrypt.hashpw(password, BCrypt.gensalt());
         System.out.println(hashed);
+    }
+
+    @Test
+    public void testOCR() throws Exception {
+        OcrUtils.scanEnChar("C:\\Users\\i348910\\Desktop\\JavaWebUtils\\CallApiUtils\\pic\\NumberTestOne.jpg");
+        OcrUtils.scanZhChar("C:\\Users\\i348910\\Desktop\\JavaWebUtils\\CallApiUtils\\pic\\NumberTestOne.jpg");
+        OcrUtils.scanEnChar("C:\\Users\\i348910\\Desktop\\JavaWebUtils\\CallApiUtils\\pic\\EnCharTestOne.png");
+        OcrUtils.scanZhChar("C:\\Users\\i348910\\Desktop\\JavaWebUtils\\CallApiUtils\\pic\\EnCharTestOne.png");
+        OcrUtils.scanEnChar("C:\\Users\\i348910\\Desktop\\JavaWebUtils\\CallApiUtils\\pic\\ZhPicOne.png");
+        OcrUtils.scanZhChar("C:\\Users\\i348910\\Desktop\\JavaWebUtils\\CallApiUtils\\pic\\ZhPicOne.png");
     }
 }
