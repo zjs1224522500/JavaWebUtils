@@ -17,6 +17,10 @@
     <modules>
         <module>CallApiUtils</module>
         <module>CommonUtils</module>
+        <module>CommonFilters</module>
+        <module>CommonListeners</module>
+        <module>CommonInterceptors</module>
+        <module>VerifyCode</module>
     </modules>
     <!-- 打包的机制，如pom, jar, maven-plugin, ejb, war, ear, rar, par -->
     <packaging>pom</packaging>
