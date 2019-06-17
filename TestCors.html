@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<script>
+function loadXMLDoc()
+{
+    var xmlhttp;
+    if (window.XMLHttpRequest)
+    {
+        xmlhttp=new XMLHttpRequest();
+    }
+    else
+    {
+        xmlhttp=new ActiveXObject("Microsoft.XMLHTTP");
+    }
+    xmlhttp.onreadystatechange=function()
+    {
+        if (xmlhttp.readyState==4 && xmlhttp.status==200)
+        {
+            document.getElementById("myDiv").innerHTML=xmlhttp.responseText;
+        }
+    }
+	var targetURL = document.getElementById("targetURL").value
+	var method = document.getElementById("method").value
+    xmlhttp.open(method,targetURL,true);
+    xmlhttp.send();
+}
+</script>
+</head>
+<body>
+
+<div id="myDiv"><h2>Test Version API</h2>
+Method : <select id="method">
+  <option value="GET">GET</option>
+  <option value="POST">POST</option>
+  <option value="PUT">PUT</option>
+  <option value="DELETE">DELETE</option>
+</select>
+Target URL :<input id = "targetURL", type = "url"></input>
+<button type="button" onclick="loadXMLDoc()">Test</button>
+</div>
+<!--
+<button type="button" href="javascript:location.reload();">Back</button>
+-->
+
+
+</body>
+</html>
