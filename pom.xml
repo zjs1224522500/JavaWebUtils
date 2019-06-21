@@ -21,6 +21,7 @@
         <module>CommonListeners</module>
         <module>CommonInterceptors</module>
         <module>VerifyCode</module>
+        <module>NIODemo</module>
     </modules>
     <!-- 打包的机制，如pom, jar, maven-plugin, ejb, war, ear, rar, par -->
     <packaging>pom</packaging>
