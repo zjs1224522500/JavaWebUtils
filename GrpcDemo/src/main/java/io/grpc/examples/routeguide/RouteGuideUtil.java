@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package routeguide;
+package io.grpc.examples.routeguide;
 
 import com.google.protobuf.util.JsonFormat;
 
