@@ -4,3 +4,4 @@
 
 ### 参考资料
 - [[1] 博客园：Java实现简单的RPC框架](https://www.cnblogs.com/codingexperience/p/5930752.html)
+- [[2] 博客园：Java实现心跳机制](https://www.cnblogs.com/codingexperience/p/5939059.html)
