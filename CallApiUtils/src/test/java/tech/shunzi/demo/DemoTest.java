@@ -88,4 +88,15 @@ public class DemoTest {
         OcrUtils.scanEnChar("C:\\Users\\i348910\\Desktop\\JavaWebUtils\\CallApiUtils\\pic\\ZhPicOne.png");
         OcrUtils.scanZhChar("C:\\Users\\i348910\\Desktop\\JavaWebUtils\\CallApiUtils\\pic\\ZhPicOne.png");
     }
+
+    @Test
+    public void testContains() throws Exception
+    {
+        String str = "String";
+        for (char ch : str.toCharArray())
+        {
+            if (str.contains())
+        }
+        
+    }
 }
