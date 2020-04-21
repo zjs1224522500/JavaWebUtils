@@ -27,19 +27,24 @@ public class KVStoreUtils {
     private final static String ACCESS_KEY = "Q3AM3UQ867SPQQA43P2F";
     private final static String SECRET_KEY = "zuf+tfteSlswRu7BJ86wekitnifILbZam1KYY3TG";
 
+    private final static String SELF_URL = "http://114.116.234.136:9000";
+    private final static String SELF_ACCESS_KEY = "admin";
+    private final static String SELF_SECRET_KEY = "admin123456";
+
+
     /**
      * Test Data
      */
     // lower case S3 standard
-    private final static String OBJECT_BUCKET = "elvis";
+    private final static String OBJECT_BUCKET = "test";
     private final static String OBJECT_KEY = "key";
-    private final static String FILE_NAME = "C:\\Users\\12245\\Pictures\\fish.png";
+    private final static String FILE_NAME = "C:\\Users\\Elvis Zhang\\Pictures\\Beach_Man_Coast_Landscape_HDR_Photography Wallpaper_2560x1600[10wallpaper.com].jpg";
     private final static String DIR_NAME = "C:\\Users\\12245\\Pictures\\Test";
     private final static String DIR_KEY = "dirkey";
 
 
     public static MinioClient getClient() throws InvalidPortException, InvalidEndpointException {
-        return new MinioClient(URL, ACCESS_KEY, SECRET_KEY);
+        return new MinioClient(SELF_URL, SELF_ACCESS_KEY, SELF_SECRET_KEY);
     }
 
     public static void main(String[] args) throws NoSuchAlgorithmException, IOException, InvalidKeyException, XmlPullParserException {
@@ -56,18 +61,18 @@ public class KVStoreUtils {
             }
             // 使用putObject上传一个文件到存储桶中。会覆盖同名对象
             String key = new File(FILE_NAME).getName();
-            minioClient.putObject(OBJECT_BUCKET, key, FILE_NAME);
+            minioClient.putObject(OBJECT_BUCKET, OBJECT_KEY, FILE_NAME);
             System.out.println(String.format("%s is successfully uploaded as %s to '%s' bucket.", FILE_NAME, key, OBJECT_BUCKET));
 //
 //            // Upload a directory
 //            minioClient.putObject(OBJECT_BUCKET, DIR_KEY, DIR_NAME);
 
             // Get
-            InputStream inputStream = minioClient.getObject(OBJECT_BUCKET, key);
+            InputStream inputStream = minioClient.getObject(OBJECT_BUCKET, OBJECT_KEY);
             System.out.println("Is inputStream of uploaded object null ? " + (null == inputStream));
 
             // Get Metedata
-            ObjectStat objectStat = minioClient.statObject(OBJECT_BUCKET, key);
+            ObjectStat objectStat = minioClient.statObject(OBJECT_BUCKET, OBJECT_KEY);
             System.out.println("Metadata of object : " + objectStat.toString());
 
             // List
