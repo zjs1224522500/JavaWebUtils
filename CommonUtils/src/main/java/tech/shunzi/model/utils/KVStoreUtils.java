@@ -3,9 +3,8 @@ package tech.shunzi.model.utils;
 import io.minio.MinioClient;
 import io.minio.ObjectStat;
 import io.minio.Result;
-import io.minio.errors.InvalidEndpointException;
-import io.minio.errors.InvalidPortException;
-import io.minio.errors.MinioException;
+import io.minio.errors.*;
+import io.minio.messages.Bucket;
 import io.minio.messages.Item;
 import org.xmlpull.v1.XmlPullParserException;
 
@@ -14,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 /**
  * OpenSource KV Store MINIO
@@ -47,7 +47,36 @@ public class KVStoreUtils {
         return new MinioClient(SELF_URL, SELF_ACCESS_KEY, SELF_SECRET_KEY);
     }
 
-    public static void main(String[] args) throws NoSuchAlgorithmException, IOException, InvalidKeyException, XmlPullParserException {
+
+    public static void main(String[] args) throws Exception  {
+
+//        MinioClient minioClient = ();
+//        List<Bucket> bucketList = minioClient.listBuckets();
+//        System.out.println(bucketList);
+
+//        PutTask task = new PutTask();
+//        for (int i = 0 ; i < 10; i++) {
+//            Thread thread = new Thread(task);
+//            thread.start();
+//        }
+    }
+
+    static class PutTask implements Runnable {
+
+        @Override
+        public void run() {
+            try {
+                MinioClient minioClient = getClient();
+                for (int i = 0; i < 10; i++) {
+                    minioClient.putObject(OBJECT_BUCKET, OBJECT_KEY, FILE_NAME);
+                }
+            } catch (InvalidPortException | InvalidEndpointException | InvalidBucketNameException | NoSuchAlgorithmException | InsufficientDataException | IOException | InvalidKeyException | NoResponseException | XmlPullParserException | ErrorResponseException | InternalException | InvalidArgumentException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void test() {
         try {
             // 使用Minio服务的URL，端口，Access key和Secret key创建一个MinioClient对象
             MinioClient minioClient = getClient();
@@ -84,7 +113,7 @@ public class KVStoreUtils {
             }
 
 
-        } catch (MinioException e) {
+        } catch (MinioException | NoSuchAlgorithmException | IOException | InvalidKeyException | XmlPullParserException e) {
             System.out.println("Error occurred: " + e);
         }
     }
