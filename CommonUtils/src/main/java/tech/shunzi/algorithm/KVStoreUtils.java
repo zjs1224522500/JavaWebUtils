@@ -1,4 +1,4 @@
-package tech.shunzi.model.utils;
+package tech.shunzi.algorithm;
 
 import io.minio.MinioClient;
 import io.minio.ObjectStat;

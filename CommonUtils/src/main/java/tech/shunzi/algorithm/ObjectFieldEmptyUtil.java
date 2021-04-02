@@ -1,4 +1,4 @@
-package tech.shunzi.model.utils;
+package tech.shunzi.algorithm;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;

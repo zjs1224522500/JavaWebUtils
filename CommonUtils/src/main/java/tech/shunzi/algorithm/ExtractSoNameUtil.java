@@ -1,4 +1,4 @@
-package tech.shunzi.model.utils;
+package tech.shunzi.algorithm;
 
 import java.util.List;
 import java.util.stream.Collectors;

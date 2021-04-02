@@ -1,4 +1,4 @@
-package tech.shunzi.model.utils;
+package tech.shunzi.algorithm;
 
 import java.time.LocalDate;
 import java.util.Date;

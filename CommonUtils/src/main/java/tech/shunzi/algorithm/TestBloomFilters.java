@@ -1,4 +1,4 @@
-package tech.shunzi.model.utils;
+package tech.shunzi.algorithm;
 
 import com.google.common.hash.BloomFilter;
 import com.google.common.hash.Funnels;

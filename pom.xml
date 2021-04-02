@@ -24,6 +24,8 @@
         <module>NIODemo</module>
         <module>GrpcDemo</module>
         <module>CsCache</module>
+        <module>RPCDemo</module>
+        <module>FileUploadAndDownload</module>
     </modules>
     <!-- 打包的机制，如pom, jar, maven-plugin, ejb, war, ear, rar, par -->
     <packaging>pom</packaging>
