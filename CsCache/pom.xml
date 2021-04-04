@@ -14,7 +14,7 @@
     <version>1.1.2-SNAPSHOT</version>
     <packaging>jar</packaging>
 
-    <name>JSR107 API and SPI</name>
+    <name>CsCache</name>
     <url>https://github.com/jsr107/jsr107spec</url>
     <licenses>
         <license>
@@ -59,7 +59,7 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
-            <version>4.13.1</version>
+            <version>4.12</version>
             <scope>test</scope>
         </dependency>
 
