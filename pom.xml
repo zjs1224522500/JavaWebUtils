@@ -59,7 +59,7 @@
         <CommonListeners.version>1.0.0.alpha</CommonListeners.version>
         <CommonInterceptors.version>1.0.0.alpha</CommonInterceptors.version>
         <!-- spring版本号 -->
-        <spring.version>5.3.5</spring.version>
+        <spring.version>5.3.18</spring.version>
         <aspectj.version>1.8.10</aspectj.version>
         <!-- jackson版本号 -->
         <jackson.version>2.12.2</jackson.version>
